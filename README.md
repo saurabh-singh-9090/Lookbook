@@ -9,10 +9,17 @@ https://github.com/user-attachments/assets/d1e22d04-55bf-448e-884d-82a93d2c40ab
 
 # To run the project locally:
 
-1. git clone https://github.com/saurabh-singh-9090/Lookbook.git'
+1. git clone https://github.com/saurabh-singh-9090/Lookbook.git
 2. npm install
 3. npm start
 
 # Tech Stacks Used
 React JS and Vanilla CSS
+
+# Features Implemented
+1. User can swipe left/right to view different looks.
+2. User can swipe up/down to view different lookbooks.
+3. User can click on annotations(product dots) to check the product link.
+4. User can mute/unmute the video played while browsing.
+5. On clicking product cards, user can redirect to specific product pages.
 
