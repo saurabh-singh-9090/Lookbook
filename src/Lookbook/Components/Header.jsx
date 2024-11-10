@@ -1,5 +1,5 @@
 
-export default function Header({ handlePreviousMedia, handleNextMedia }) {
+const Header = ({ handlePreviousMedia, handleNextMedia }) => {
     return (
         <div className="top-bar">
             <button className="icon-button" onClick={handlePreviousMedia} aria-label="Back">
@@ -16,3 +16,5 @@ export default function Header({ handlePreviousMedia, handleNextMedia }) {
         </div>
     );
 }
+
+export default Header;

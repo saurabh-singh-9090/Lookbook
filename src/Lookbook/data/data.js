@@ -1,5 +1,5 @@
 import video1 from '../assets/video1.mp4';
-import video2 from '../assets/video2.mp4'
+import video2 from '../assets/video2.mp4';
 
 export const looks = [
     {
@@ -32,13 +32,11 @@ export const looks = [
                         id: 1,
                         name: 'Jacket',
                         price: 199.99,
-                        // position: { x: 50, y: 30 },
                     },
                     {
                         id: 2,
                         name: 'T-Shirt',
                         price: 29.99,
-                        // position: { x: 85, y: 55 },
                     },
                 ],
             },

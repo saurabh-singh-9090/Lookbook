@@ -1,5 +1,5 @@
 
-export default function Annotation({ product, handleProductClick }) {
+const Annotation = ({ product, handleProductClick }) => {
 
     return (
         <button
@@ -10,3 +10,5 @@ export default function Annotation({ product, handleProductClick }) {
         />
     );
 }
+
+export default Annotation;

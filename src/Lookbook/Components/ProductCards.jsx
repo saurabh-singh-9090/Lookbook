@@ -1,5 +1,5 @@
 
-export default function ProductCards({ currentMediaItem , handleProductClick}) {
+const ProductCards = ({ currentMediaItem , handleProductClick}) => {
     return (
         <div className="product-cards">
             <div className="product-cards-container">
@@ -13,3 +13,5 @@ export default function ProductCards({ currentMediaItem , handleProductClick}) {
         </div>
     );
 }
+
+export default ProductCards;

@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import '../../Lookbook/lookbook.css';
 import { looks } from '../data/data';
-import MediaDisplay from './MediaDisplay';
+import MediaView from './MediaView';
 import Header from './Header';
 import ProgressBar from './ProgressBar';
 import Annotation from './Annotation';
@@ -14,7 +14,7 @@ const randomUrls = [
     'https://i.imgur.com/OB0y6MR.jpg',
 ];
 
-export default function Lookbook() {
+const Lookbook = () => {
     const [currentLook, setCurrentLook] = useState(0);
     const [currentMedia, setCurrentMedia] = useState(0);
     const [progress, setProgress] = useState(0);
@@ -140,7 +140,7 @@ export default function Lookbook() {
             })}
             onTouchEnd={handleTouchEnd}
         >
-            <MediaDisplay
+            <MediaView
                 currentMediaItem={currentMediaItem}
                 isMuted={isMuted}
                 toggleMute={toggleMute}
@@ -167,3 +167,5 @@ export default function Lookbook() {
         </div>
     );
 }
+
+export default Lookbook;

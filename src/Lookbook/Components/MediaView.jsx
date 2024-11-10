@@ -1,5 +1,5 @@
 
-export default function MediaDisplay({ currentMediaItem, isMuted, toggleMute, handleNextMedia, videoRef }) {
+const MediaView = ({ currentMediaItem, isMuted, toggleMute, handleNextMedia, videoRef }) => {
     const isVideo = currentMediaItem?.type === 'video';
 
     return (
@@ -41,3 +41,5 @@ export default function MediaDisplay({ currentMediaItem, isMuted, toggleMute, ha
         </div>
     );
 }
+
+export default MediaView;
