@@ -1,5 +1,5 @@
-
-export default function ProgressBar({ currentLookData, currentMedia, progress }) {
+import React from 'react';
+const ProgressBar = ({ currentLookData, currentMedia, progress }) => {
     return (
         <div className="progress-container">
             {currentLookData?.media?.map((_, index) => (
@@ -16,3 +16,5 @@ export default function ProgressBar({ currentLookData, currentMedia, progress })
         </div>
     );
 }
+
+export default ProgressBar;

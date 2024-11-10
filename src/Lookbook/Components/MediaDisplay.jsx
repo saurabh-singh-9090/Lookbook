@@ -15,7 +15,6 @@ export default function MediaDisplay({ currentMediaItem, isMuted, toggleMute, ha
                         onEnded={handleNextMedia}
                         aria-label="Product video"
                         onClick={toggleMute}
-                        autoPlay
                     />
                     <button
                         className="mute-toggle-icon"

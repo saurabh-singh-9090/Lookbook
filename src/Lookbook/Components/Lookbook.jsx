@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import '../../Lookbook/lookbook.css';
 import { looks } from '../data/data';
 import MediaDisplay from './MediaDisplay';
-import TopBar from './TopBar';
+import Header from './Header';
 import ProgressBar from './ProgressBar';
 import Annotation from './Annotation';
 import ProductCards from './ProductCards';
@@ -22,11 +22,34 @@ export default function Lookbook() {
     const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
     const progressInterval = useRef(null);
     const videoRef = useRef(null);
+    const containerRef = useRef(null);
 
     const currentLookData = looks[currentLook];
     const currentMediaItem = currentLookData?.media[currentMedia];
     const isVideo = currentMediaItem?.type === 'video';
 
+    const handleProductClick = () => {
+        const randomUrl = randomUrls[Math.floor(Math.random() * randomUrls.length)];
+        window.open(randomUrl, '_blank');
+    };
+
+    const handleNextMedia = () => {
+        if (currentMedia < currentLookData?.media?.length - 1) {
+            setCurrentMedia(currentMedia + 1);
+        } else {
+            // If we are at the last media of the current look
+            if (currentLook < looks.length - 1) {
+                // Move to the next look
+                setCurrentLook(currentLook + 1);
+                setCurrentMedia(0); // Reset media index to start at the beginning of the next look
+            } else {
+                // If it's the last look and last media, loop back to the start
+                setCurrentLook(0);
+                setCurrentMedia(0);
+            }
+        }
+        setProgress(0);
+    };
 
     useEffect(() => {
         if (isVideo) {
@@ -39,7 +62,7 @@ export default function Lookbook() {
             clearInterval(progressInterval.current);
             progressInterval.current = setInterval(() => {
                 setProgress((prev) => {
-                    if (prev >= 100) {
+                    if (prev >= 90) {
                         handleNextMedia();
                         return 0;
                     }
@@ -55,38 +78,35 @@ export default function Lookbook() {
         };
     }, [currentMedia, currentLook, isMuted]);
 
-    const handleNextMedia = () => {
-        if (currentMedia < currentLookData?.media?.length - 1) {
-            setCurrentMedia(currentMedia + 1);
-        } else {
-            if (currentLook < looks.length - 1) {
-                setCurrentLook(currentLook + 1);
-                setCurrentMedia(0);
-            } else {
-                setCurrentLook(0);
-                setCurrentMedia(0);
-            }
+    useEffect(() => {
+        if (isVideo && videoRef.current) {
+            videoRef.current.muted = isMuted;
         }
-        setProgress(0);
-    };
+    }, [isMuted, isVideo]);
 
     const handlePreviousMedia = () => {
         if (currentMedia > 0) {
+            // Move to the previous media within the same look
             setCurrentMedia(currentMedia - 1);
         } else {
+            // We are at the first media of the current look
             if (currentLook > 0) {
+                // Move to the previous look
                 const previousLookIndex = currentLook - 1;
                 const previousLookMediaLength = looks[previousLookIndex]?.media.length;
                 setCurrentLook(previousLookIndex);
-                setCurrentMedia(previousLookMediaLength ? previousLookMediaLength - 1 : 0);
+                setCurrentMedia(previousLookMediaLength ? previousLookMediaLength - 1 : 0); // Safely handle last media of previous look
             } else {
+                // We are at the very first media of the very first look; loop back to the last look
                 const lastLookIndex = looks.length - 1;
                 const lastMediaIndex = looks[lastLookIndex]?.media.length - 1;
-                setCurrentLook(lastLookIndex);
-                setCurrentMedia(lastMediaIndex);
+                if (lastMediaIndex >= 0) {
+                    setCurrentLook(lastLookIndex);
+                    setCurrentMedia(lastMediaIndex);
+                }
             }
         }
-        setProgress(0);
+        setProgress(0); // Reset progress
     };
 
     const toggleMute = () => {
@@ -95,20 +115,29 @@ export default function Lookbook() {
 
     const handleTouchEnd = (e) => {
         const deltaX = e.changedTouches?.[0].clientX - touchStart.x;
-        if (Math.abs(deltaX) > 50) {
-            deltaX > 0 ? handlePreviousMedia() : handleNextMedia();
-        }
-    };
+        const deltaY = e.changedTouches?.[0].clientY - touchStart.y;
 
-    const handleProductClick = () => {
-        const randomUrl = randomUrls[Math.floor(Math.random() * randomUrls.length)];
-        window.open(randomUrl, '_blank');
+        // Ensuring there's a significant swipe distance before triggering the navigation
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+            if (deltaX > 0) {
+                handlePreviousMedia(); // Swipe right -> Previous media
+            } else {
+                handleNextMedia(); // Swipe left -> Next media
+            }
+        } else if (Math.abs(deltaY) > 50) {
+            // Swiping vertically to change the look
+            setCurrentLook(currentLook + (deltaY > 0 ? -1 : 1));
+        }
     };
 
     return (
         <div
             className="lookbook-container"
-            onTouchStart={(e) => setTouchStart({ x: e?.touches?.[0].clientX || e?.clientX })}
+            ref={containerRef}
+            onTouchStart={(e) => setTouchStart({
+                x: e?.touches?.[0].clientX || e?.clientX,
+                y: e?.touches?.[0].clientY || e?.clientYs,
+            })}
             onTouchEnd={handleTouchEnd}
         >
             <MediaDisplay
@@ -119,7 +148,7 @@ export default function Lookbook() {
                 videoRef={videoRef}
             />
             <div className='ui-overlay'>
-                <TopBar
+                <Header
                     handlePreviousMedia={handlePreviousMedia}
                     handleNextMedia={handleNextMedia}
                 />

@@ -1,5 +1,5 @@
 
-export default function TopBar({ handlePreviousMedia, handleNextMedia }) {
+export default function Header({ handlePreviousMedia, handleNextMedia }) {
     return (
         <div className="top-bar">
             <button className="icon-button" onClick={handlePreviousMedia} aria-label="Back">
