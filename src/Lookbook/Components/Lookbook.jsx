@@ -56,7 +56,6 @@ const Lookbook = () => {
             if (videoRef?.current) {
                 videoRef.current.currentTime = 0;
                 videoRef?.current?.play();
-                videoRef.current.muted = isMuted; // Mute/unmute video
             }
         } else {
             clearInterval(progressInterval.current);
@@ -76,7 +75,7 @@ const Lookbook = () => {
                 clearInterval(progressInterval.current);
             }
         };
-    }, [currentMedia, currentLook, isMuted]);
+    }, [currentMedia, currentLook]);
 
     useEffect(() => {
         if (isVideo && videoRef.current) {
@@ -118,6 +117,8 @@ const Lookbook = () => {
         const deltaY = e.changedTouches?.[0].clientY - touchStart.y;
 
         // Ensuring there's a significant swipe distance before triggering the navigation
+        // Math.abs(deltaX) > Math.abs(deltaY): Ensures the swipe is primarily horizontal (not diagonal or vertical).
+        // Math.abs(deltaX) > 50: Ensures the swipe is long enough (more than 50 pixels) to be considered intentional, avoiding accidental swipes.
         if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
             if (deltaX > 0) {
                 handlePreviousMedia(); // Swipe right -> Previous media
@@ -139,6 +140,7 @@ const Lookbook = () => {
                 y: e?.touches?.[0].clientY || e?.clientYs,
             })}
             onTouchEnd={handleTouchEnd}
+            onClick={toggleMute}
         >
             <MediaView
                 currentMediaItem={currentMediaItem}
@@ -152,17 +154,19 @@ const Lookbook = () => {
                     handlePreviousMedia={handlePreviousMedia}
                     handleNextMedia={handleNextMedia}
                 />
+                <div style={{margin: '8px'}}>
                 <ProgressBar
                     currentLookData={currentLookData}
                     currentMedia={currentMedia}
                     progress={progress}
                 />
+                <ProductCards currentMediaItem={currentMediaItem} handleProductClick={handleProductClick} />
                 {currentMediaItem && !isVideo &&
                     currentMediaItem.products.map(product => (
                         <Annotation key={product.id} product={product} />
                     ))
                 }
-                <ProductCards currentMediaItem={currentMediaItem} handleProductClick={handleProductClick} />
+            </div>
             </div>
         </div>
     );

@@ -11,10 +11,9 @@ const MediaView = ({ currentMediaItem, isMuted, toggleMute, handleNextMedia, vid
                         src={currentMediaItem?.url}
                         className="media-content"
                         muted={isMuted}
-                        playsInline
+                        playsInline    //Ensures the video plays inline on mobile browsers rather than in fullscreen.
                         onEnded={handleNextMedia}
                         aria-label="Product video"
-                        onClick={toggleMute}
                     />
                     <button
                         className="mute-toggle-icon"

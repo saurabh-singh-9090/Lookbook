@@ -7,7 +7,7 @@ const Header = ({ handlePreviousMedia, handleNextMedia }) => {
                     <path d="M14 19l-7-7 7-7"></path>
                 </svg>
             </button>
-            <div className="top-bar-title">Tectonic.so</div>
+            <div className="top-bar-title">Fashion</div>
             <button onClick={handleNextMedia} aria-label="Next media" className='icon-button'>
                 <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M10 5l7 7-7 7"></path>
